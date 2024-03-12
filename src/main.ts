@@ -33,15 +33,16 @@ async function getNewFileHandle() {
     types: [
       {
         description: "Text File",
-        accept: { "text/plain": [".txt"] },
+        accept: { "text/plain": [] },
       },
       {
         description: "Markdown",
-        accept: { "text/plain": [".md"] },
+        accept: { "text/plain": [] },
       },
     ],
   };
 
+  // @ts-ignore
   return await window.showSaveFilePicker(options);
 }
 
@@ -86,7 +87,7 @@ textarea.addEventListener("select", handlePosChange);
 textarea.addEventListener("selectstart", handlePosChange);
 
 if (localStorage.getItem(backupName) != null) {
-  textarea.value = localStorage.getItem(backupName);
+  textarea.value = localStorage.getItem(backupName) || "";
 }
 
 if (localStorage.getItem(backupName) == null)
