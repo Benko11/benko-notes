@@ -5,13 +5,12 @@
 }
 
 ::selection {
-  background-color: hsl(var(--accent-hue), 40%, 92%);
+  background-color: hsl(var(--accent-hue), 80%, 80%);
 }
 
 body {
-  --background: #efefef;
   --foreground: #131313;
-  background-color: var(--background);
+  background-color: hsl(var(--accent-hue), 50%, 90%);
   color: var(--foreground);
   font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
     Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif2;
@@ -37,23 +36,18 @@ textarea {
 }
 
 .btn {
-  --btn-saturation: 50;
-  --btn-lightness: 87;
   all: unset;
-  background-color: hsl(
-    var(--accent-hue),
-    calc(var(--btn-saturation) * 1%),
-    calc(var(--btn-lightness) * 1%)
-  );
   cursor: pointer;
-  padding: 5px 8px;
+  padding: 8px 14px;
   border-radius: 4px;
   user-select: none;
 }
 
 .btn:hover {
-  --btn-saturation: 70;
-  --btn-lightness: 80;
+  --shadow-transparency: 15;
+  background-color: hsl(var(--accent-hue), 100%, 85%);
+  box-shadow: 2px 2px 0.5px
+    rgba(19, 19, 19, calc(var(--shadow-transparency) * 1%));
 }
 
 .text-editor > header {
@@ -82,21 +76,36 @@ textarea {
 }
 
 header {
+  --header-saturation: 40;
+  --header-lightness: 80;
   padding: 4px 6px;
+  background-color: hsl(
+    var(--accent-hue),
+    calc(var(--header-saturation) * 1%),
+    calc(var(--header-lightness) * 1%)
+  );
 }
 
 @media (prefers-color-scheme: dark) {
   ::selection {
-    background-color: hsl(var(--accent-hue), 40%, 20%);
+    background-color: hsl(var(--accent-hue), 50%, 25%);
   }
+
   body {
-    --background: #141414;
+    background-color: hsl(var(--accent-hue), 10%, 10%);
+
     --foreground: #dfdfdf;
   }
 
-  .btn {
-    --btn-saturation: 40;
-    --btn-lightness: 20;
+  header {
+    --header-saturation: 50;
+    --header-lightness: 17;
+  }
+
+  .btn:hover {
+    --shadow-transparency: 40;
+
+    background-color: hsl(var(--accent-hue), 100%, 20%);
   }
 
   .status-bar {
