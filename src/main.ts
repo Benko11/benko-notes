@@ -12,6 +12,12 @@ const textarea = document.querySelector(
 const lineNumber = document.querySelector("#line-number") as HTMLSpanElement;
 const colNumber = document.querySelector("#col-number") as HTMLSpanElement;
 
+window.addEventListener("load", () => {
+  if ("serviceworker" in navigator) {
+    navigator.serviceWorker.register("./sw.ts");
+  }
+});
+
 openBtn.addEventListener("click", async () => {
   const [fileHandle] = await window.showOpenFilePicker();
   const file = await fileHandle.getFile();
