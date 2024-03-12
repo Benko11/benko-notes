@@ -27,7 +27,7 @@ openBtn.addEventListener("click", async () => {
 
 async function getNewFileHandle() {
   const options = {
-    id: "Benko Notes",
+    id: "benko-notes",
     suggestedName: "Note",
     startIn: "documents",
     types: [
