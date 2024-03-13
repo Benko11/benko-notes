@@ -1,7 +1,8 @@
 @import "reset";
 
 :root {
-  --accent-hue: 200;
+  --accent-hue: 210;
+  --textarea-font: monospace;
 }
 
 ::selection {
@@ -31,7 +32,7 @@ textarea {
   background-color: transparent;
   color: inherit;
   line-height: 1.4;
-  font-family: monospace;
+  font-family: var(--textarea-font);
   padding: 24px 20px;
 }
 
@@ -65,6 +66,7 @@ textarea {
     calc(var(--status-bar-lightness) * 1%)
   );
   display: flex;
+  user-select: none;
 }
 
 .pos {
