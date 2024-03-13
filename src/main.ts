@@ -1,3 +1,5 @@
+import { countWords } from "./utils/countWords";
+
 const backupName = "BENKO_NOTES_USER_INPUT";
 
 const openBtn = document.querySelector(
@@ -11,6 +13,7 @@ const textarea = document.querySelector(
 ) as HTMLTextAreaElement;
 const lineNumber = document.querySelector("#line-number") as HTMLSpanElement;
 const colNumber = document.querySelector("#col-number") as HTMLSpanElement;
+const countWordsEl = document.querySelector("#count-words") as HTMLSpanElement;
 
 window.addEventListener("load", () => {
   if ("serviceworker" in navigator) {
@@ -55,11 +58,14 @@ saveBtn.addEventListener("click", async () => {
 
 function handlePosChange() {
   const pos = checkCaret();
-  let parsed = textarea.value.split("\n");
+  const parsed = textarea.value.substring(0, pos).split("\n");
   const parsedLineNumber = parsed.length;
   const parsedColNumber = parsed[parsed.length - 1].length;
   lineNumber.textContent = parsedLineNumber.toString();
   colNumber.textContent = parsedColNumber.toString();
+
+  const count = countWords(textarea.value);
+  countWordsEl.textContent = count.toString();
 }
 
 let pos = 0;
@@ -74,7 +80,7 @@ function checkCaret() {
 
 textarea.addEventListener("keypress", handlePosChange);
 textarea.addEventListener("keyup", handlePosChange);
-textarea.addEventListener("mousedown", handlePosChange);
+textarea.addEventListener("click", handlePosChange);
 textarea.addEventListener("touchstart", handlePosChange);
 textarea.addEventListener("input", () => {
   handlePosChange();
