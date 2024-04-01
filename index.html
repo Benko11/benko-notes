@@ -17,15 +17,34 @@
     <main class="text-editor">
       <header>
         <button data-type="open" class="btn">Open</button>
-        <button data-type="save" class="btn">Save</button>
+        <div class="dropdown">
+          <button class="btn" data-trigger="dropdown"><span id="current-file-name"></button>
+          <div class="dropdown-list" data-state="closed">
+            <div class="dropdown-list-input-container">
+              <input
+                type="text"
+                id="file-name"
+                spellcheck="false"
+                value="Untitled.txt"
+              />
+            </div>
+            <div class="dropdown-list-action" data-type="save">
+              Write to file
+            </div>
+            <div class="dropdown-list-action" data-type="save-copy">
+              Save a copy
+            </div>
+          </div>
+        </div>
         <button data-type="preferences" class="btn">Preferences</button>
       </header>
+
       <textarea autofocus autocapitalize="on" data-type="contents"></textarea>
       <footer class="status-bar">
-        <div class="pos">
+        <div class="left">
           Ln <span id="line-number"></span>, Col <span id="col-number"></span>
         </div>
-        <div class="pos" style="margin-left: auto">
+        <div class="right" style="margin-left: auto">
           <span id="count-words"></span> words
         </div>
       </footer>

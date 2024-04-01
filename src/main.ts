@@ -1,5 +1,7 @@
 import { countWords } from "./utils/countWords";
 
+type DropdownState = "open" | "closed";
+
 const backupName = "BENKO_NOTES_USER_INPUT";
 
 const openBtn = document.querySelector(
@@ -8,12 +10,47 @@ const openBtn = document.querySelector(
 const saveBtn = document.querySelector(
   '[data-type="save"]'
 ) as HTMLButtonElement;
+const saveCopyBtn = document.querySelector(
+  '[data-type="save-copy"]'
+) as HTMLButtonElement;
 const textarea = document.querySelector(
   '[data-type="contents"]'
 ) as HTMLTextAreaElement;
 const lineNumber = document.querySelector("#line-number") as HTMLSpanElement;
 const colNumber = document.querySelector("#col-number") as HTMLSpanElement;
 const countWordsEl = document.querySelector("#count-words") as HTMLSpanElement;
+const dropdowns = document.querySelectorAll(
+  '[data-trigger="dropdown"]'
+) as NodeListOf<HTMLDivElement>;
+const currentFileName = document.getElementById(
+  "current-file-name"
+) as HTMLSpanElement;
+const fileNameInput = document.getElementById("file-name") as HTMLInputElement;
+
+[...dropdowns].forEach((dropdown) => {
+  dropdown.addEventListener("click", () => {
+    const nearestDropdown = dropdown.nextElementSibling as HTMLDivElement;
+    const currentState = nearestDropdown.dataset.state as DropdownState;
+    const newState: DropdownState = currentState === "open" ? "closed" : "open";
+    nearestDropdown.dataset.state = newState;
+  });
+});
+
+document.body.addEventListener(
+  "click",
+  (e) => {
+    if (e.target == null) return;
+
+    const closest = (e.target as HTMLElement).closest(
+      ".dropdown-list"
+    ) as HTMLDivElement;
+    const findButton = (e.target as HTMLElement).closest("button");
+    if (closest == null && findButton == null) {
+      closeDropdowns();
+    }
+  },
+  { capture: true }
+);
 
 window.addEventListener("load", () => {
   if ("serviceworker" in navigator) {
@@ -26,12 +63,14 @@ openBtn.addEventListener("click", async () => {
   const file = await fileHandle.getFile();
   const contents = await file.text();
   textarea.value = contents;
+  globalFileHandle = fileHandle;
+  updateFileName(fileHandle.name);
 });
 
-async function getNewFileHandle() {
+async function getNewFileHandle(name: string = "Note") {
   const options = {
     id: "benko-notes",
-    suggestedName: "Note",
+    suggestedName: name,
     startIn: "documents",
     types: [
       {
@@ -48,13 +87,31 @@ async function getNewFileHandle() {
   // @ts-ignore
   return await window.showSaveFilePicker(options);
 }
+saveBtn.addEventListener("click", saveFile);
+saveCopyBtn.addEventListener("click", async () => saveFile());
 
-saveBtn.addEventListener("click", async () => {
-  const fileHandle = getNewFileHandle();
-  const writable = (await fileHandle).createWritable();
-  (await writable).write(textarea.value);
-  (await writable).close();
-});
+let globalFileHandle: FileSystemFileHandle;
+
+async function saveFile() {
+  if (globalFileHandle == null)
+    globalFileHandle = await getNewFileHandle(fileNameInput.value);
+
+  const writable = await globalFileHandle.createWritable();
+
+  await writable.write(textarea.value);
+  await writable.close();
+
+  console.log(globalFileHandle);
+}
+
+async function saveFileAs() {
+  const fileHandle = await getNewFileHandle(fileNameInput.value);
+  const writable = await fileHandle.createWritable();
+
+  await writable.write(textarea.value);
+  await writable.close();
+  globalFileHandle = fileHandle;
+}
 
 function handlePosChange() {
   const pos = checkCaret();
@@ -68,14 +125,31 @@ function handlePosChange() {
   countWordsEl.textContent = count.toString();
 }
 
+function updateFileName(filename: string) {
+  currentFileName.textContent = filename;
+  fileNameInput.value = filename;
+}
+
+updateFileName("Untitled");
+fileNameInput.addEventListener("input", (e) => {
+  if (e.currentTarget == null) return;
+  updateFileName(e.currentTarget.value);
+});
+
 let pos = 0;
 function checkCaret() {
   const newPos = textarea.selectionStart;
   if (newPos !== pos) {
-    console.log("change to " + newPos);
     pos = newPos;
   }
   return pos;
+}
+
+function closeDropdowns() {
+  [...dropdowns].forEach(
+    (dropdown) =>
+      ((dropdown.nextElementSibling as HTMLElement).dataset.state = "closed")
+  );
 }
 
 textarea.addEventListener("keypress", handlePosChange);
