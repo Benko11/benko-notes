@@ -1,6 +1,7 @@
+import { DropdownState } from "./types/DropdownState";
+import { closeDropdowns } from "./utils/closeDropdowns";
 import { countWords } from "./utils/countWords";
-
-type DropdownState = "open" | "closed";
+import { trackCursorPosition } from "./utils/trackCursorPositon";
 
 const backupName = "BENKO_NOTES_USER_INPUT";
 
@@ -36,21 +37,21 @@ const fileNameInput = document.getElementById("file-name") as HTMLInputElement;
   });
 });
 
-document.body.addEventListener(
-  "click",
-  (e) => {
-    if (e.target == null) return;
+function handleCloseDropdowns(e: MouseEvent) {
+  if (e.target == null) return;
 
-    const closest = (e.target as HTMLElement).closest(
-      ".dropdown-list"
-    ) as HTMLDivElement;
-    const findButton = (e.target as HTMLElement).closest("button");
-    if (closest == null && findButton == null) {
-      closeDropdowns();
-    }
-  },
-  { capture: true }
-);
+  const closest = (e.target as HTMLElement).closest(
+    ".dropdown-list"
+  ) as HTMLDivElement;
+  const findButton = (e.target as HTMLElement).closest("button");
+  if (closest == null && findButton == null) {
+    closeDropdowns(dropdowns);
+  }
+}
+
+document.body.addEventListener("click", handleCloseDropdowns, {
+  capture: true,
+});
 
 window.addEventListener("load", () => {
   if ("serviceworker" in navigator) {
@@ -88,7 +89,7 @@ async function getNewFileHandle(name: string = "Note") {
   return await window.showSaveFilePicker(options);
 }
 saveBtn.addEventListener("click", saveFile);
-saveCopyBtn.addEventListener("click", async () => saveFile());
+saveCopyBtn.addEventListener("click", saveFile);
 
 let globalFileHandle: FileSystemFileHandle;
 
@@ -100,8 +101,6 @@ async function saveFile() {
 
   await writable.write(textarea.value);
   await writable.close();
-
-  console.log(globalFileHandle);
 }
 
 async function saveFileAs() {
@@ -133,7 +132,7 @@ function updateFileName(filename: string) {
 updateFileName("Untitled");
 fileNameInput.addEventListener("input", (e) => {
   if (e.currentTarget == null) return;
-  updateFileName(e.currentTarget.value);
+  updateFileName((e.currentTarget as HTMLInputElement).value);
 });
 
 let pos = 0;
@@ -145,26 +144,11 @@ function checkCaret() {
   return pos;
 }
 
-function closeDropdowns() {
-  [...dropdowns].forEach(
-    (dropdown) =>
-      ((dropdown.nextElementSibling as HTMLElement).dataset.state = "closed")
-  );
-}
+trackCursorPosition(textarea, handlePosChange);
 
-textarea.addEventListener("keypress", handlePosChange);
-textarea.addEventListener("keyup", handlePosChange);
-textarea.addEventListener("click", handlePosChange);
-textarea.addEventListener("touchstart", handlePosChange);
 textarea.addEventListener("input", () => {
-  handlePosChange();
   localStorage.setItem(backupName, textarea.value);
 });
-textarea.addEventListener("paste", handlePosChange);
-textarea.addEventListener("cut", handlePosChange);
-textarea.addEventListener("mousemove", handlePosChange);
-textarea.addEventListener("select", handlePosChange);
-textarea.addEventListener("selectstart", handlePosChange);
 
 if (localStorage.getItem(backupName) != null) {
   textarea.value = localStorage.getItem(backupName) || "";
