@@ -17,6 +17,12 @@ const saveCopyBtn = document.querySelector(
 const textarea = document.querySelector(
   '[data-type="contents"]'
 ) as HTMLTextAreaElement;
+const preferencesBtn = document.querySelector(
+  '[data-type="preferences"]'
+) as HTMLButtonElement;
+const preferencesModal = document.querySelector(
+  "dialog.preferences"
+) as HTMLDialogElement;
 const lineNumber = document.querySelector("#line-number") as HTMLSpanElement;
 const colNumber = document.querySelector("#col-number") as HTMLSpanElement;
 const countWordsEl = document.querySelector("#count-words") as HTMLSpanElement;
@@ -58,6 +64,20 @@ window.addEventListener("load", () => {
     navigator.serviceWorker.register("./sw.ts");
   }
 });
+
+preferencesBtn.addEventListener("click", () => {
+  preferencesModal.showModal();
+});
+
+preferencesModal.addEventListener(
+  "click",
+  (e) => {
+    if ((e.target as HTMLElement).classList.contains("btn-fill")) {
+      preferencesModal.close();
+    }
+  },
+  { capture: true }
+);
 
 openBtn.addEventListener("click", async () => {
   const [fileHandle] = await window.showOpenFilePicker();
