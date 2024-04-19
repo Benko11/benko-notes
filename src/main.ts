@@ -150,9 +150,8 @@ textarea.addEventListener("input", () => {
   localStorage.setItem(backupName, textarea.value);
 });
 
-if (localStorage.getItem(backupName) != null) {
+if (localStorage.getItem(backupName) != null)
   textarea.value = localStorage.getItem(backupName) || "";
-}
 
 if (localStorage.getItem(backupName) == null)
   localStorage.setItem(backupName, "");
