@@ -23,9 +23,9 @@
             <div class="dropdown-list-input-container">
               <input
                 type="text"
+                class="input-field"
                 id="file-name"
                 spellcheck="false"
-                value="Untitled.txt"
               />
             </div>
             <div class="dropdown-list-action" data-type="save">
@@ -55,35 +55,26 @@
 
       <section>
         <h3>Themes</h3>
-        <div class="radios">
-          <div class="radio-selection">
-            <input type="radio" name="theme" id="blue">
-            <label for="blue">
-              <div class="circle blue"></div>
-              <div class="tag">Blue</div>
-            </label>
-          </div>
 
+        <template id="theme-box">
           <div class="radio-selection">
-            <input type="radio" name="theme" id="green">
-            <label for="green">
-              <div class="circle green"></div>
-              <div class="tag">Green</div>
+            <input type="radio" name="theme" value="" id="colour">
+            <label for="colour">
+              <div class="circle colour"></div>
+              <div class="tag"></div>
             </label>
           </div>
+        </template>
 
-          <div class="radio-selection">
-            <input type="radio" name="theme" id="red">
-            <label for="red">
-              <div class="circle red"></div>
-              <div class="tag">Red</div>
-            </label>
-          </div>
-        </div>
+        <div class="radios" id="themes"></div>
       </section>
 
       <section>
         <h3>Text Editor</h3>
+        <div class="input-group">
+          <label for="font-size">Font size</label>
+          <select id="font-size" class="input-field"></select>
+        </div>
       </section>
 
       <button class="btn-fill close">Close</button>

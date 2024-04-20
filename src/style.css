@@ -124,15 +124,27 @@ header {
   display: none;
 }
 
-#file-name {
+.input-field {
   all: unset;
   border: 2px solid hsl(var(--accent-hue), 10%, 70%);
   padding: 4px 10px;
   border-radius: 0.25em;
 }
 
-#file-name:focus {
+.input-field:focus {
   border-color: hsl(var(--accent-hue), 60%, 60%);
+}
+
+.input-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+select.input-field option {
+  background-color: hsl(var(--accent-hue), 50%, 90%);
+  color: var(--foreground);
+  font-size: 18px;
 }
 
 .dropdown-list-action {
@@ -179,7 +191,7 @@ header {
   flex-direction: column;
   border-radius: 20px;
   box-shadow: 2px 2px 5px #00000024;
-  gap: 10px;
+  gap: 16px;
 }
 
 .preferences[open=""]::backdrop {
@@ -188,7 +200,7 @@ header {
 }
 
 .preferences[open=""] section h3 {
-  margin-bottom: -8px;
+  margin-top: -6px;
 }
 
 .tag {
@@ -269,6 +281,10 @@ header {
     background: rgba(14 14 14 / 5%);
   }
 
+  select.input-field option {
+    background-color: hsl(var(--accent-hue), 10%, 10%);
+  }
+
   body {
     background-color: hsl(var(--accent-hue), 10%, 10%);
 
@@ -304,11 +320,11 @@ header {
     background-color: hsl(var(--accent-hue), 40%, 20%);
   }
 
-  #file-name {
+  .input-field {
     border: 2px solid hsl(var(--accent-hue), 10%, 40%);
   }
 
-  #file-name:focus {
+  .input-field:focus {
     border: 2px solid hsl(var(--accent-hue), 40%, 50%);
   }
 
