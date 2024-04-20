@@ -55,7 +55,7 @@ function generateThemeBoxes() {
 
 export function handleTheming() {
   if (localStorage.getItem(themeSetup) == null)
-    localStorage.setItem(themeSetup, "blue");
+    localStorage.setItem(themeSetup, themes[0].name.toLowerCase());
 
   rootElement.style.setProperty("--accent-hue", getCurrentHue());
 

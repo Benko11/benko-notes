@@ -1,8 +1,8 @@
 import { DropdownState } from "./types/DropdownState";
 import { closeDropdowns } from "./utils/closeDropdowns";
 import { countWords } from "./utils/countWords";
-import { handleTextSizing } from "./utils/text-options";
-import { handleTheming } from "./utils/theming";
+import { handleTextSizing } from "./utils/preferences/text-options";
+import { handleTheming } from "./utils/preferences/theming";
 import { trackCursorPosition } from "./utils/trackCursorPosition";
 
 const backupName = "BENKO_NOTES.USER_INPUT";
