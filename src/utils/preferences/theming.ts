@@ -57,15 +57,14 @@ export function handleTheming() {
   if (localStorage.getItem(themeSetup) == null)
     localStorage.setItem(themeSetup, themes[0].name.toLowerCase());
 
-  rootElement.style.setProperty("--accent-hue", getCurrentHue());
-
-  function getCurrentHue() {
-    return (
+  rootElement.style.setProperty(
+    "--accent-hue",
+    (
       themesEl.querySelector(
         `#${localStorage.getItem(themeSetup)}`
       ) as HTMLInputElement
-    ).value;
-  }
+    ).value
+  );
 }
 
 generateThemeBoxes();
