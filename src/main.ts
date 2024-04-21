@@ -64,11 +64,11 @@ document.body.addEventListener("click", handleCloseDropdowns, {
   capture: true,
 });
 
-window.addEventListener("load", () => {
-  if ("serviceworker" in navigator) {
+if ("serviceworker" in navigator) {
+  window.addEventListener("load", () => {
     navigator.serviceWorker.register("./sw.ts");
-  }
-});
+  });
+}
 
 preferencesBtn.addEventListener("click", () => {
   preferencesModal.showModal();
