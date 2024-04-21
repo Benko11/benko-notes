@@ -13,7 +13,8 @@ export default defineConfig({
         name: "Benko Notes",
         short_name: "Benko Notes",
         description: "Online or offline notepad for all your note-taking needs",
-        theme_color: "#c2e0f0",
+        theme_color: "#141414",
+        display: "standalone",
         icons: [
           {
             src: "/icons/icon-192-192.png",
